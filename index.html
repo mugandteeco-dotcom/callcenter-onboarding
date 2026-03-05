@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="styles.css" />
   <link href="https://api.fontshare.com/v2/css?f[]=clash-display@400,500,600,700&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- ▸ FIREBASE SDK (compat v9) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script>
+    /* ================================================================
+       FIREBASE CONFIG — Replace with your own values from:
+       Firebase Console → Project Settings → Your Apps → Web App
+       ================================================================ */
+    const firebaseConfig = {
+      apiKey:            "AIzaSyAzVWeWmTzUmxM5VRMssW3gffRBhUpDsLo",
+      authDomain:        "configgo-onboarding.firebaseapp.com",
+      projectId:         "configgo-onboarding",
+      storageBucket:     "configgo-onboarding.firebasestorage.app",
+      messagingSenderId: "345821305751",
+      appId:             "1:345821305751:web:b9a0cdc527e5560a2a82d2",
+      measurementId:     "G-QVFEFD5MHC"
+    };
+    firebase.initializeApp(firebaseConfig);
+
+    // Auth guard — redirect to login if not signed in
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) {
+        window.location.href = 'login.html';
+      } else {
+        // Show user email in header
+        const el = document.getElementById('user-email');
+        if (el) el.textContent = user.email;
+      }
+    });
+  </script>
 </head>
 <body>
 
@@ -14,14 +45,12 @@
 <header class="header">
   <div class="logo">
     <div class="logo-mark">
-      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <rect x="2" y="2" width="5" height="5" rx="1.5" fill="#0A0A0A"/>
-        <rect x="9" y="2" width="5" height="5" rx="1.5" fill="#0A0A0A"/>
-        <rect x="2" y="9" width="5" height="5" rx="1.5" fill="#0A0A0A"/>
-        <rect x="9" y="9" width="5" height="5" rx="1.5" fill="#0A0A0A" opacity=".4"/>
+      <svg viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26.8238 8.125H16.128C15.9436 8.125 15.7939 8.27512 15.7939 8.46008V11.3769V11.5619V18.4369V21.5399C15.7939 21.7249 15.9436 21.875 16.128 21.875H19.2207H29.916C30.1005 21.875 30.2501 21.7249 30.2501 21.5399V18.9733V18.4382V11.5632V8.46008C30.2501 8.27512 30.1005 8.125 29.916 8.125H26.8238ZM26.8251 15.6611V15.6383L26.8238 18.2416C26.8238 18.3491 26.7368 18.4364 26.6295 18.4364H19.4154C19.3082 18.4364 19.2211 18.3491 19.2211 18.2416V11.5632L19.2194 14.1466V13.4231L19.2207 11.758C19.2207 11.6505 19.3077 11.5632 19.415 11.5632H26.6291C26.7363 11.5632 26.8234 11.6505 26.8234 11.758V18.4364L26.8251 15.6611Z" fill="#0A0A0A"/>
+        <path d="M14.4562 11.3016V8.38696C14.4562 8.24243 14.3395 8.125 14.195 8.125H0.261187C0.116655 8.125 0 8.242 0 8.38696V11.3003C0 11.4449 0.116655 11.5619 0.260758 11.5623L2.5248 11.5632C2.75897 11.5632 2.87648 11.8475 2.71051 12.0135L0.0763403 14.6555C0.0274482 14.7045 0 14.7712 0 14.8404V21.6135C0 21.758 0.116655 21.8755 0.261187 21.8755H3.29164H3.42674H6.56269C6.65576 21.8755 6.74196 21.8256 6.78871 21.7447L10.5435 15.2336C10.6782 15 11.0342 15.0959 11.0342 15.3656V21.6135C11.0342 21.758 11.1508 21.8755 11.2954 21.8755H14.1954C14.3395 21.8755 14.4566 21.7585 14.4566 21.6135V14.4352C14.4566 14.2907 14.34 14.1733 14.1954 14.1733H11.1551H11.0346H7.88364C7.79057 14.1733 7.70436 14.2232 7.65762 14.304L3.91737 20.7898C3.7827 21.0233 3.42674 20.9274 3.42674 20.6577V11.8273C3.42674 11.6814 3.54468 11.5636 3.68964 11.5636H14.195C14.3395 11.5632 14.4562 11.4462 14.4562 11.3016Z" fill="#0A0A0A"/>
       </svg>
     </div>
-    Configgo
+    Configgo Technology
   </div>
   <div class="header-badge">
     <span class="badge-dot"></span>
@@ -33,9 +62,36 @@
       <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
       <button class="lang-btn" data-lang="tr" onclick="setLang('tr')">TR</button>
     </div>
+    <button class="theme-btn" id="theme-btn" onclick="toggleTheme()" title="Toggle light/dark mode">
+      <!-- Moon = shown in dark mode -->
+      <span class="icon-moon">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M13.5 10.5A6 6 0 0 1 5.5 2.5a6 6 0 1 0 8 8Z" fill="currentColor"/>
+        </svg>
+      </span>
+      <!-- Sun = shown in light mode -->
+      <span class="icon-sun">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <circle cx="8" cy="8" r="3" fill="currentColor"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.42 1.42M11.53 11.53l1.42 1.42M3.05 12.95l1.42-1.42M11.53 4.47l1.42-1.42" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </span>
+    </button>
     <button class="quick-ref-btn" onclick="openQR()">
       ⚡ <span class="lang-en">Quick Ref</span><span class="lang-tr">Hızlı Ref</span>
     </button>
+    <div class="user-info">
+      <span class="user-email" id="user-email"></span>
+      <button class="logout-btn" onclick="logout()" title="Sign out">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+          <polyline points="16 17 21 12 16 7"/>
+          <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+        <span class="lang-en">Logout</span>
+        <span class="lang-tr">Çıkış</span>
+      </button>
+    </div>
   </div>
 </header>
 

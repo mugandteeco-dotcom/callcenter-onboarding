@@ -6,6 +6,10 @@
 
 // ── Init ──────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore theme preference
+  const savedTheme = localStorage.getItem('cg-theme') || 'dark';
+  applyTheme(savedTheme, false);
+
   // Restore language preference
   const savedLang = localStorage.getItem('cg-lang') || 'en';
   setLang(savedLang, false);
@@ -21,6 +25,17 @@ document.addEventListener('DOMContentLoaded', () => {
     item.addEventListener('click', () => toggleCheck(item));
   });
 });
+
+// ── Theme Toggle ───────────────────────────────────────────────
+function toggleTheme() {
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+}
+
+function applyTheme(theme, save = true) {
+  document.documentElement.setAttribute('data-theme', theme);
+  if (save) localStorage.setItem('cg-theme', theme);
+}
 
 // ── Language Toggle ────────────────────────────────────────────
 function setLang(lang, save = true) {
@@ -212,6 +227,13 @@ function restoreChecklists() {
       if (checks[i]) item.classList.add('checked');
     });
   });
+}
+
+// ── Auth ────────────────────────────────────────────────────────
+function logout() {
+  firebase.auth().signOut()
+    .then(() => { window.location.href = 'login.html'; })
+    .catch(err => console.error('Logout error:', err));
 }
 
 // ── Quick Ref Modal ────────────────────────────────────────────

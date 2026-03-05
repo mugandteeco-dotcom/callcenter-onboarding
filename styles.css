@@ -1162,6 +1162,7 @@ img { display: block; max-width: 100%; }
   .product-grid { grid-template-columns: 1fr; }
   .win-grid { grid-template-columns: 1fr; }
   .tonality-grid { grid-template-columns: 1fr 1fr; }
+  .logo-text { display: none; }
 }
 
 @media (max-width: 480px) {
